@@ -7,11 +7,13 @@ on:
         description: "GamexlabTR oyun sayfası URL'si"
         required: true
         type: string
+
       game_title:
         description: "Videoda görünecek oyun adı"
         required: true
         default: "New HTML5 Game"
         type: string
+
       record_seconds:
         description: "Kayıt süresi"
         required: true
@@ -39,6 +41,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: "npm"
 
       - name: Paketleri kur
         run: npm install
