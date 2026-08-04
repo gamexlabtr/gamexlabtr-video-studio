@@ -4,18 +4,16 @@ on:
   workflow_dispatch:
     inputs:
       game_url:
-        description: "GamexlabTR oyun sayfası URL'si"
+        description: "GamexlabTR oyun sayfasi URL'si"
         required: true
         type: string
-
       game_title:
-        description: "Videoda görünecek oyun adı"
+        description: "Videoda gorunecek oyun adi"
         required: true
         default: "New HTML5 Game"
         type: string
-
       record_seconds:
-        description: "Kayıt süresi"
+        description: "Kayit suresi"
         required: true
         default: "15"
         type: string
@@ -34,31 +32,30 @@ jobs:
       RECORD_SECONDS: ${{ inputs.record_seconds }}
 
     steps:
-      - name: Projeyi indir
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Node.js kur
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "npm"
 
-      - name: Paketleri kur
+      - name: Install packages
         run: npm install
 
-      - name: Chromium kur
+      - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: FFmpeg kontrolü
+      - name: Check FFmpeg
         run: ffmpeg -version
 
-      - name: Oyun kaydını oluştur
+      - name: Capture game
         run: npm run capture
 
-      - name: Dikey videoyu hazırla
+      - name: Render vertical video
         run: npm run render
 
-      - name: Videoyu çıktı olarak yükle
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: gamexlabtr-video
