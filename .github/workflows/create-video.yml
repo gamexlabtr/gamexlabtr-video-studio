@@ -1,1 +1,71 @@
 
+name: Create Game Video
+
+on:
+  workflow_dispatch:
+    inputs:
+      game_url:
+        description: "GamexlabTR oyun sayfası URL'si"
+        required: true
+        type: string
+
+      game_title:
+        description: "Videoda görünecek oyun adı"
+        required: true
+        default: "New HTML5 Game"
+        type: string
+
+      record_seconds:
+        description: "Kayıt süresi"
+        required: true
+        default: "15"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  create-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      GAME_URL: ${{ inputs.game_url }}
+      GAME_TITLE: ${{ inputs.game_title }}
+      RECORD_SECONDS: ${{ inputs.record_seconds }}
+
+    steps:
+      - name: Projeyi indir
+        uses: actions/checkout@v4
+
+      - name: Node.js kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Paketleri kur
+        run: npm install
+
+      - name: Chromium kur
+        run: npx playwright install --with-deps chromium
+
+      - name: FFmpeg kontrolü
+        run: ffmpeg -version
+
+      - name: Oyun kaydını oluştur
+        run: npm run capture
+
+      - name: Dikey videoyu hazırla
+        run: npm run render
+
+      - name: Videoyu çıktı olarak yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: gamexlabtr-video
+          path: |
+            output/gamexlabtr-final.mp4
+            output/cover.png
+            output/metadata.json
+          if-no-files-found: error
+          retention-days: 7
