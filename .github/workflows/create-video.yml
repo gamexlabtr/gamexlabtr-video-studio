@@ -1,4 +1,3 @@
-
 name: Create Game Video
 
 on:
@@ -8,13 +7,11 @@ on:
         description: "GamexlabTR oyun sayfası URL'si"
         required: true
         type: string
-
       game_title:
         description: "Videoda görünecek oyun adı"
         required: true
         default: "New HTML5 Game"
         type: string
-
       record_seconds:
         description: "Kayıt süresi"
         required: true
@@ -38,11 +35,10 @@ jobs:
       - name: Projeyi indir
         uses: actions/checkout@v4
 
- - name: Node.js kur
-  uses: actions/setup-node@v4
-  with:
-    node-version: "22"
-    cache: "npm"
+      - name: Node.js kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
 
       - name: Paketleri kur
         run: npm install
