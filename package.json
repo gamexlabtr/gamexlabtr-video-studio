@@ -1,0 +1,11 @@
+{
+  "name": "gamexlabtr-video-studio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node capture.js"
+  },
+  "dependencies": {
+    "playwright": "^1.44.1"
+  }
+}
