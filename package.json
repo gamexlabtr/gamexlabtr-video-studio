@@ -1,0 +1,15 @@
+{
+  "name": "gamexlabtr-video-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GamexlabTR için GitHub Actions tabanlı otomatik dikey oyun videosu üretim prototipi.",
+  "type": "commonjs",
+  "scripts": {
+    "capture": "node src/capture.js",
+    "render": "bash scripts/render.sh",
+    "build:video": "npm run capture && npm run render"
+  },
+  "dependencies": {
+    "playwright": "1.44.1"
+  }
+}
