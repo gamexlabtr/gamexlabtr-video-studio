@@ -64,12 +64,16 @@ jobs:
         run: npm install
 
       - name: Install Chromium dependencies
-  run: |
-    sudo apt-get update
-    sudo apt-get install -y libasound2t64
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libasound2t64 \
+            libatk-bridge2.0-0 \
+            libatspi2.0-0 \
+            libxkbcommon0
 
-- name: Install Chromium
-  run: npx playwright install chromium
+      - name: Install Chromium
+        run: npx playwright install chromium
 
       - name: Verify FFmpeg
         run: ffmpeg -version
