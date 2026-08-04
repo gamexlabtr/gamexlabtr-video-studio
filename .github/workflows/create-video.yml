@@ -1,0 +1,91 @@
+name: Create Game Video
+
+on:
+  workflow_dispatch:
+    inputs:
+      game_url:
+        description: "GamexlabTR oyun sayfasi URL'si"
+        required: true
+        type: string
+      game_title:
+        description: "Videoda gorunecek oyun adi"
+        required: true
+        default: "New HTML5 Game"
+        type: string
+      category:
+        description: "Oyun kategorisi"
+        required: false
+        default: "HTML5 Games"
+        type: string
+      record_seconds:
+        description: "Oynanis kayit suresi (8-30)"
+        required: true
+        default: "15"
+        type: string
+      language:
+        description: "Sosyal medya dili"
+        required: true
+        default: "en"
+        type: choice
+        options:
+          - en
+          - tr
+      make_webhook:
+        description: "Opsiyonel Make webhook URL"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  create-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    env:
+      GAME_URL: ${{ inputs.game_url }}
+      GAME_TITLE: ${{ inputs.game_title }}
+      GAME_CATEGORY: ${{ inputs.category }}
+      RECORD_SECONDS: ${{ inputs.record_seconds }}
+      SOCIAL_LANGUAGE: ${{ inputs.language }}
+      MAKE_WEBHOOK: ${{ inputs.make_webhook }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install npm packages
+        run: npm install
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify FFmpeg
+        run: ffmpeg -version
+
+      - name: Capture gameplay
+        run: npm run capture
+
+      - name: Render vertical video
+        run: npm run render
+
+      - name: Prepare social package
+        run: npm run social
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: gamexlabtr-video
+          path: |
+            output/gamexlabtr-final.mp4
+            output/cover.png
+            output/metadata.json
+            output/social.json
+          if-no-files-found: error
+          retention-days: 7

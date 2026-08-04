@@ -1,0 +1,16 @@
+{
+  "name": "gamexlabtr-video-studio",
+  "version": "2.0.0",
+  "private": true,
+  "description": "GamexlabTR için GitHub Actions tabanlı otomatik kısa oyun videosu üretim ve sosyal medya hazırlık paketi.",
+  "type": "commonjs",
+  "scripts": {
+    "capture": "node src/capture.js",
+    "render": "bash scripts/render.sh",
+    "social": "node src/social.js",
+    "build:video": "npm run capture && npm run render && npm run social"
+  },
+  "dependencies": {
+    "playwright": "1.44.1"
+  }
+}
