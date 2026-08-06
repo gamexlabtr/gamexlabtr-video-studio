@@ -20,7 +20,7 @@ on:
       record_seconds:
         description: "Oynanis kayit suresi (8-30)"
         required: true
-        default: "15"
+        default: "30"
         type: string
       language:
         description: "Sosyal medya dili"
