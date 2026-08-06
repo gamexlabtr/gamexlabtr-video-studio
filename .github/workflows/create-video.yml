@@ -18,7 +18,7 @@ on:
         default: "HTML5 Games"
         type: string
       record_seconds:
-        description: "Oynanis kayit suresi (8-30)"
+        description: "Oynanis kayit suresi (8-60)"
         required: true
         default: "30"
         type: string
